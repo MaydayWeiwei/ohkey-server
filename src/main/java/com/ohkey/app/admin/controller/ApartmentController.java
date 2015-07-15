@@ -61,8 +61,8 @@ public class ApartmentController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE,value="{id}")
-	public String deleteApte(@PathVariable("id") int apteId) {
-		Apartment a = apteRepository.findOne(new Integer(apteId));
+	public String deleteApte(@PathVariable("id") int aptId) {
+		Apartment a = apteRepository.findOne(new Integer(aptId));
 		apteRepository.delete(a);
 		return "success";
 	}

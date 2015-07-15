@@ -29,7 +29,7 @@ public class Apartment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Basic(optional = false)
 	@Column(nullable = false)
-	private Integer id;
+	private int id;
 
 	@OneToOne(mappedBy = "apartment")
 	private KeyInfo keyInfo;
@@ -70,11 +70,11 @@ public class Apartment implements Serializable {
 	public Apartment() {
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
