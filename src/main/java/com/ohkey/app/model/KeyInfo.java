@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 
  * @author Wei JIANG
@@ -34,6 +36,7 @@ public class KeyInfo implements Serializable {
 
 	@JoinColumn(name = "aptid", referencedColumnName = "id")
 	@OneToOne(optional = false)
+	@JsonIgnore
 	private Apartment apartment;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "keyInfo")
@@ -41,10 +44,11 @@ public class KeyInfo implements Serializable {
 
 	@JoinColumn(name = "barid", referencedColumnName = "id")
 	@ManyToOne(optional = false)
+	@JsonIgnore
 	private Bar bar;
 
 	@Column(name = "externalkey")
-	private double externalKey;
+	private Integer externalKey;
 	
 	public KeyInfo () {
 	}
@@ -81,11 +85,11 @@ public class KeyInfo implements Serializable {
 		this.bar = bar;
 	}
 
-	public double getExternalKey() {
+	public Integer getExternalKey() {
 		return externalKey;
 	}
 
-	public void setExternalKey(double externalKey) {
+	public void setExternalKey(Integer externalKey) {
 		this.externalKey = externalKey;
 	}
 

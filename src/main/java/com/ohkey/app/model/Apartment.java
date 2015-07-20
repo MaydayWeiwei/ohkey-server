@@ -7,13 +7,17 @@ package com.ohkey.app.model;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -31,7 +35,8 @@ public class Apartment implements Serializable {
 	@Column(nullable = false)
 	private int id;
 
-	@OneToOne(mappedBy = "apartment")
+	@OneToOne(mappedBy = "apartment", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+	@JsonIgnore
 	private KeyInfo keyInfo;
 
 	@Column(name = "clientname", length = 255)

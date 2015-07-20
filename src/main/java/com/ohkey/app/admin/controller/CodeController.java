@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ohkey.app.model.Code;
 import com.ohkey.app.repository.CodeRepository;
-import com.ohkey.app.util.CodeGenerator;
+import com.ohkey.app.util.Generator;
 
 /**
  * Handles requests for the application home page.
@@ -47,7 +47,7 @@ public class CodeController {
 		Code newCode = new Code();
 		newCode.setCurrentDate(c.getCurrentDate());
 		newCode.setEndDate(c.getEndDate());
-		newCode.setGenerateCode(CodeGenerator.generateCode());
+		newCode.setGenerateCode(Generator.generateCode());
 		newCode.setKeyInfo(c.getKeyInfo());
 		newCode.setStartDate(c.getStartDate());
 		codeRepository.save(newCode);
