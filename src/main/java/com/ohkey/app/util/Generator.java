@@ -19,7 +19,7 @@ public class Generator {
 		Iterable<KeyInfo> keyInfos = keyInfoRepository.findAll();
 		for (KeyInfo k : keyInfos) {
 			Integer externalKey = k.getExternalKey();
-			if (externalKey > maxExternalKey)
+			if (externalKey != null && externalKey > maxExternalKey)
 				maxExternalKey = externalKey;
 		}
 		return maxExternalKey;

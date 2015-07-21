@@ -33,7 +33,7 @@ public class Bar implements Serializable {
 	@Column(nullable = false)
 	private Integer id;
 
-	@OneToMany(mappedBy = "bar", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "bar", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	private List<KeyInfo> keyInfoList;
 

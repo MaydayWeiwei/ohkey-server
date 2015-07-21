@@ -27,15 +27,14 @@ import com.ohkey.app.util.Generator;
 @RequestMapping("/admin/apartment")
 public class ApartmentController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(ApartmentController.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(ApartmentController.class);
+
 	@Autowired
 	ApartmentRepository apteRepository;
 
 	@Autowired
 	KeyInfoRepository keyInfoRepository;
-	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -43,7 +42,7 @@ public class ApartmentController {
 	public List<Apartment> displayAptes() {
 		List<Apartment> apteList = new ArrayList<Apartment>();
 		Iterable<Apartment> aptes = apteRepository.findAll();
-		for(Apartment a:aptes){
+		for (Apartment a : aptes) {
 			apteList.add(a);
 		}
 		return apteList;
@@ -66,64 +65,62 @@ public class ApartmentController {
 		newApte.setStatus(status);
 		KeyInfo keyInfo = new KeyInfo();
 		if (!"not live".equals(status))
-			keyInfo.setExternalKey(Generator.generateExternalKey()+1);
-		
+			keyInfo.setExternalKey(Generator.generateExternalKey() + 1);
+
 		keyInfo.setApartment(newApte);
 		newApte.setKeyInfo(keyInfo);
 		newApte.setTel(a.getTel());
 		apteRepository.save(newApte);
 		return "success";
 	}
-	
-	@RequestMapping (method = RequestMethod.PUT, value = "{aptId}")
-	public String updateStatus (@PathVariable("aptId") int aptId, @RequestParam String newStatus) {
+
+	@RequestMapping(method = RequestMethod.PUT, value = "{aptId}")
+	public String updateStatus(@PathVariable("aptId") int aptId, @RequestParam String newStatus) {
 		Apartment a = apteRepository.findOne(new Integer(aptId));
 		KeyInfo k = a.getKeyInfo();
 		String status = a.getStatus();
-  		switch (status) {
-  		case "not live":
-  			  //different change for available vs unavailable
-  			if ("available".equals(newStatus)){
-  				a.setStatus(newStatus);
-  				apteRepository.save(a);
-  				k.setExternalKey(Generator.generateExternalKey()+1);
-  				keyInfoRepository.save(k);
-  			}else if("unavailable".equals(newStatus)){
-  				a.setStatus(newStatus);
-  				apteRepository.save(a);
-  				k.setExternalKey(Generator.generateExternalKey()+1);
-  				keyInfoRepository.save(k);
-  			}
-  			break;
-  		case "available":
-  			  //different change for available vs not live
-  			if ("not live".equals(newStatus)){
-  				a.setStatus(newStatus);
-  				apteRepository.save(a);
-  				k.setExternalKey(null);
-  				keyInfoRepository.save(k);
-  			}else if("unavailable".equals(newStatus)){
-  				a.setStatus(newStatus);
-  				apteRepository.save(a);
-  				k.setExternalKey(Generator.generateExternalKey()+1);
-  				keyInfoRepository.save(k);
-  			}
-  			break;
-  		case "unavailable":
-  			if ("not live".equals(newStatus)){
-  				a.setStatus(newStatus);
-  				apteRepository.save(a);
-  				k.setExternalKey(null);
-  				keyInfoRepository.save(k);
-  			}else if("available".equals(newStatus)){
-  				a.setStatus(newStatus);
-  				apteRepository.save(a);
-  			}
-  			break;
-  		}
+		switch (status) {
+		case "not live":
+			// different change for available vs unavailable
+			if ("available".equals(newStatus)) {
+				a.setStatus(newStatus);
+				k.setExternalKey(Generator.generateExternalKey()+1);
+				keyInfoRepository.save(k);
+				apteRepository.save(a);
+			} else if ("unavailable".equals(newStatus)) {
+				a.setStatus(newStatus);
+				apteRepository.save(a);
+				k.setExternalKey(Generator.generateExternalKey() + 1);
+				keyInfoRepository.save(k);
+			}
+			break;
+		case "available":
+			// different change for available vs not live
+			if ("not live".equals(newStatus)) {
+				a.setStatus(newStatus);
+				apteRepository.save(a);
+				k.setExternalKey(null);
+				keyInfoRepository.save(k);
+			} else if ("unavailable".equals(newStatus)) {
+				a.setStatus(newStatus);
+				apteRepository.save(a);
+			}
+			break;
+		case "unavailable":
+			if ("not live".equals(newStatus)) {
+				a.setStatus(newStatus);
+				apteRepository.save(a);
+				k.setExternalKey(null);
+				keyInfoRepository.save(k);
+			} else if ("available".equals(newStatus)) {
+				a.setStatus(newStatus);
+				apteRepository.save(a);
+			}
+			break;
+		}
 		return "success";
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public String deleteApte(@PathVariable("id") int aptId) {
 		Apartment a = apteRepository.findOne(new Integer(aptId));
