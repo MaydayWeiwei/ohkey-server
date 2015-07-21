@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ohkey.app.model.Apartment;
+import com.ohkey.app.model.Bar;
 import com.ohkey.app.model.KeyInfo;
 import com.ohkey.app.repository.ApartmentRepository;
+import com.ohkey.app.repository.BarRepository;
 import com.ohkey.app.repository.KeyInfoRepository;
 import com.ohkey.app.util.Generator;
 
@@ -34,6 +35,9 @@ public class ApartmentController {
 
 	@Autowired
 	KeyInfoRepository keyInfoRepository;
+	
+	@Autowired
+	BarRepository barRepository;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -51,6 +55,7 @@ public class ApartmentController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String addApte(@RequestBody Apartment a) {
+		Bar bar = barRepository.findOne(1);
 		Apartment newApte = new Apartment();
 		newApte.setClientName(a.getClientName());
 		newApte.setAddress(a.getAddress());
@@ -64,8 +69,10 @@ public class ApartmentController {
 		String status = a.getStatus();
 		newApte.setStatus(status);
 		KeyInfo keyInfo = new KeyInfo();
-		if (!"not live".equals(status))
+		if (!"not live".equals(status)) {
 			keyInfo.setExternalKey(Generator.generateExternalKey() + 1);
+			keyInfo.setBar(bar);
+		}
 
 		keyInfo.setApartment(newApte);
 		newApte.setKeyInfo(keyInfo);
@@ -84,13 +91,13 @@ public class ApartmentController {
 			// different change for available vs unavailable
 			if ("available".equals(newStatus)) {
 				a.setStatus(newStatus);
-				k.setExternalKey(Generator.generateExternalKey()+1);
+				k.setExternalKey(generateExternalKey()+1);
 				keyInfoRepository.save(k);
 				apteRepository.save(a);
 			} else if ("unavailable".equals(newStatus)) {
 				a.setStatus(newStatus);
 				apteRepository.save(a);
-				k.setExternalKey(Generator.generateExternalKey() + 1);
+				k.setExternalKey(generateExternalKey() + 1);
 				keyInfoRepository.save(k);
 			}
 			break;
@@ -126,6 +133,17 @@ public class ApartmentController {
 		Apartment a = apteRepository.findOne(new Integer(aptId));
 		apteRepository.delete(a);
 		return "success";
+	}
+	
+	private int generateExternalKey () {
+		int maxExternalKey = 0;
+		Iterable<KeyInfo> keyInfos = keyInfoRepository.findAll();
+		for (KeyInfo k : keyInfos) {
+			Integer externalKey = k.getExternalKey();
+			if (externalKey != null && externalKey > maxExternalKey)
+				maxExternalKey = externalKey;
+		}
+		return maxExternalKey;
 	}
 
 }
