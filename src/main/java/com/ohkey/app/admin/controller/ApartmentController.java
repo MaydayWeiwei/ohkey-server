@@ -55,8 +55,8 @@ public class ApartmentController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String addApte(@RequestBody Apartment a) {
-		Bar bar = barRepository.findOne(1);
 		Apartment newApte = new Apartment();
+		Bar b = barRepository.findOne(1);
 		newApte.setClientName(a.getClientName());
 		newApte.setAddress(a.getAddress());
 		newApte.setCapacity(a.getCapacity());
@@ -69,9 +69,9 @@ public class ApartmentController {
 		String status = a.getStatus();
 		newApte.setStatus(status);
 		KeyInfo keyInfo = new KeyInfo();
+		keyInfo.setBar(b);
 		if (!"not live".equals(status)) {
 			keyInfo.setExternalKey(Generator.generateExternalKey() + 1);
-			keyInfo.setBar(bar);
 		}
 
 		keyInfo.setApartment(newApte);

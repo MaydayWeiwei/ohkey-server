@@ -1,6 +1,7 @@
 package com.ohkey.app.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -15,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * 
@@ -101,6 +101,10 @@ public class Bar implements Serializable {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	
+	public List<KeyInfo> getKeyInfoList() {
+		return keyInfoList;
 	}
 
 }
