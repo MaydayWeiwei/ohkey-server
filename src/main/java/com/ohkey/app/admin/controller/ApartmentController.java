@@ -71,7 +71,7 @@ public class ApartmentController {
 		KeyInfo keyInfo = new KeyInfo();
 		keyInfo.setBar(b);
 		if (!"not live".equals(status)) {
-			keyInfo.setExternalKey(Generator.generateExternalKey() + 1);
+			keyInfo.setExternalKey(generateExternalKey() + 1);
 		}
 
 		keyInfo.setApartment(newApte);
