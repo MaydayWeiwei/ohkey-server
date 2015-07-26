@@ -1,8 +1,7 @@
 package com.ohkey.app.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -36,17 +35,17 @@ public class Code implements Serializable {
 	private Date startDate;
 
 	@Column(name = "enddate")
-	private String endDate;
+	private Date endDate;
 
 	@JoinColumn(name = "keyid", referencedColumnName = "id")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private KeyInfo keyInfo;
 
 	@Column(name = "currentdate", nullable = false)
-	private Timestamp currentDate;
+	private Date currentDate;
 
 	@Column(name = "generatecode")
-	private int generateCode;
+	private String generateCode;
 	
 	public Code () {
 	}
@@ -67,11 +66,11 @@ public class Code implements Serializable {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
@@ -83,19 +82,19 @@ public class Code implements Serializable {
 		this.keyInfo = keyInfo;
 	}
 
-	public Timestamp getCurrentDate() {
+	public Date getCurrentDate() {
 		return currentDate;
 	}
 
-	public void setCurrentDate(Timestamp currentDate) {
+	public void setCurrentDate(Date currentDate) {
 		this.currentDate = currentDate;
 	}
 
-	public int getGenerateCode() {
+	public String getGenerateCode() {
 		return generateCode;
 	}
 
-	public void setGenerateCode(int generateCode) {
+	public void setGenerateCode(String generateCode) {
 		this.generateCode = generateCode;
 	}
 
