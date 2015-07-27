@@ -19,7 +19,6 @@ import com.ohkey.app.model.KeyInfo;
 import com.ohkey.app.repository.ApartmentRepository;
 import com.ohkey.app.repository.BarRepository;
 import com.ohkey.app.repository.KeyInfoRepository;
-import com.ohkey.app.util.Generator;
 
 /**
  * Handles requests for the application home page.
