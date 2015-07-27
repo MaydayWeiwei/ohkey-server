@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 
  * @author Wei JIANG
@@ -38,7 +40,8 @@ public class Code implements Serializable {
 	private Date endDate;
 
 	@JoinColumn(name = "keyid", referencedColumnName = "id")
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false)
+	@JsonIgnore
 	private KeyInfo keyInfo;
 
 	@Column(name = "currentdate", nullable = false)

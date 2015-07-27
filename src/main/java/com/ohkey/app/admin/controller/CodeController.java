@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ohkey.app.Exception.MultiCodeException;
 import com.ohkey.app.model.Apartment;
 import com.ohkey.app.model.Code;
 import com.ohkey.app.model.KeyInfo;
@@ -52,6 +53,25 @@ public class CodeController {
 		return codeList;
 
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	public KeyInfo validateCode (@RequestParam String generateCode) throws MultiCodeException {
+		Date today = new Date();
+		List<Code> codes = codeRepository.findByGenerateCode(generateCode);
+		if (codes.isEmpty())
+			return null;
+
+		if (codes.size() > 1)
+			throw new MultiCodeException();
+		Code c = codes.get(0);
+		Date startDate = c.getStartDate();
+		Date endDate = new Date(c.getEndDate().getTime());
+		if ((startDate.before(today) || compareDate(startDate, today))
+				&& (endDate.after(today) || compareDate(endDate, today))) {
+			return c.getKeyInfo();
+		}
+		return null;
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String addCode(@RequestParam String startDate, @RequestParam String endDate, @RequestParam int aptId) {
@@ -73,5 +93,9 @@ public class CodeController {
 		sb.append(startDate.charAt(0)).append(aptId).append(endDate.charAt(0)).append(keyId);
 		return sb.toString();
 	}
-
+	
+	private boolean compareDate (Date date1, Date date2) {
+		return date1.getYear() == date2.getYear() &&date1.getMonth()== date2.getMonth() && date1.getDay()==date2.getDay();
+	}
+	
 }
